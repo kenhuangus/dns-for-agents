@@ -1,0 +1,125 @@
+{
+  "$schema": "http://json-schema.org/draft-07/schema#",
+  "title": "AgentRenewalRequest",
+  "description": "Schema for renewing an existing agent's registration.",
+  "type": "object",
+  "properties": {
+    "requestType": {
+      "type": "string",
+      "enum": ["renewal"],
+      "description": "Type of request: 'renewal' to renew an existing agent's registration."
+    },
+    "requestingAgent": {
+      "type": "object",
+      "description": "Information about the agent making the request.",
+      "properties": {
+        "agentName": {
+          "type": "string",
+          "description": "Name of the agent."
+        },
+        "agentDID": {
+          "type": "string",
+          "description": "The Decentralized Identifier (DID) of the agent."
+        },
+        "certificate":{
+            "type": "object",
+             "description": "The certificate of the agent",
+          "properties": {
+            "certificateSubject": {
+              "type": "string"
+            },
+            "certificateIssuer": {
+              "type": "string"
+            },
+            "certificateSerialNumber": {
+              "type": "string"
+            },
+            "certificateValidFrom": {
+              "type": "string",
+              "format": "date-time"
+            },
+            "certificateValidTo": {
+              "type": "string",
+              "format": "date-time"
+            },
+            "certificatePEM": {
+              "type": "string",
+              "description": "Base64 encoded PEM certificate (consider a reference to a secure vault instead)."
+            },
+            "certificatePublicKeyAlgorithm": {
+              "type": "string"
+            },
+            "certificateSignatureAlgorithm": {
+              "type": "string"
+            }
+          },
+          "required": [
+            "certificateSubject",
+            "certificateIssuer",
+            "certificateSerialNumber",
+            "certificateValidFrom",
+            "certificateValidTo",
+            "certificatePEM",
+            "certificatePublicKeyAlgorithm",
+            "certificateSignatureAlgorithm"
+          ]
+        },
+        "updatedA2aAgentCard": {
+          "type": "object",
+          "description": "A2A Agent Card describing updated agent capabilities and endpoints.",
+          "properties": {
+            "agentName": { "type": "string" },
+            "description": { "type": "string" },
+            "capabilities": {
+              "type": "array",
+              "items": { "type": "string" }
+            },
+            "endpoints": {
+              "type": "array",
+              "items": {
+                "type": "object",
+                "properties": {
+                  "protocol": { "type": "string" },
+                  "url": { "type": "string", "format": "uri" }
+                },
+                "required": ["protocol", "url"]
+              }
+            }
+          },
+          "required": ["agentName", "description", "capabilities", "endpoints"]
+        },
+           "updatedMcpClientInformation": {
+              "type": "object",
+              "description": "Updated Information about the MCP client if it is relevant",
+              "properties":{
+                "supportedTools":{
+                    "type":"array",
+                    "description": "List of names of the tools the agent supports."
+                },
+                  "supportedResources":{
+                    "type":"array",
+                    "description": "List of names of the resources the agent supports."
+                }
+
+              }
+            },
+        "agentStatus": {
+          "type": "string",
+          "enum": ["active", "inactive"],
+          "description": "The agent status for the renew request"
+        }
+      },
+      "required": [
+        "agentName",
+        "agentDID",
+          "certificate",
+        "updatedA2aAgentCard",
+        "agentStatus"
+      ]
+    }
+  },
+  "required": [
+    "requestType",
+    "requestingAgent"
+  ]
+}
