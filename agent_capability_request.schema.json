@@ -1,0 +1,79 @@
+{
+  "$schema": "http://json-schema.org/draft-07/schema#",
+  "title": "AgentCapabilityRequest",
+  "description": "Schema for requesting agent capabilities or advertising capabilities.",
+  "type": "object",
+  "properties": {
+    "requestType": {
+      "type": "string",
+      "enum": ["discovery", "advertisement"],
+      "description": "Type of request: 'discovery' to search for agents, 'advertisement' to advertise capabilities."
+    },
+    "requestingAgent": {
+      "type": "object",
+      "description": "Information about the agent making the request.",
+      "properties": {
+        "agentName": {"type": "string"},
+        "agentPolicyId": {"type": "string"},
+        "agentUseJustification": {"type": "string"},
+        "agentCapability": {"type": "string"},
+        "agentEndpoint": {"type": "string", "format": "uri"},
+        "agentDID": {"type": "string"},
+        "certificate": {
+          "type": "object",
+          "properties": {
+            "certificateSubject": {"type": "string"},
+            "certificateIssuer": {"type": "string"},
+            "certificateSerialNumber": {"type": "string"},
+            "certificateValidFrom": {"type": "string", "format": "date-time"},
+            "certificateValidTo": {"type": "string", "format": "date-time"},
+            "certificatePEM": {"type": "string"},
+            "certificatePublicKeyAlgorithm": {"type": "string"},
+            "certificateSignatureAlgorithm": {"type": "string"}
+          },
+          "required": [
+            "certificateSubject","certificateIssuer","certificateSerialNumber","certificateValidFrom","certificateValidTo","certificatePEM","certificatePublicKeyAlgorithm","certificateSignatureAlgorithm"
+          ]
+        },
+        "a2aAgentCard": {
+          "type": "object",
+          "properties": {
+            "agentName": {"type": "string"},
+            "description": {"type": "string"},
+            "capabilities": {"type": "array", "items": {"type": "string"}},
+            "endpoints": {
+              "type": "array",
+              "items": {
+                "type": "object",
+                "properties": {
+                  "protocol": {"type": "string"},
+                  "url": {"type": "string", "format": "uri"}
+                },
+                "required": ["protocol", "url"]
+              }
+            }
+          },
+          "required": ["agentName", "description", "capabilities", "endpoints"]
+        },
+        "mcpClientInformation": {
+          "type": "object",
+          "properties":{
+            "supportedTools": {"type": "array"},
+            "supportedResources": {"type": "array"}
+          }
+        }
+      },
+      "required": ["agentName","agentPolicyId","agentUseJustification","agentCapability","agentEndpoint","agentDID","certificate","a2aAgentCard"]
+    },
+    "queryParameters": {
+      "type": "object",
+      "properties": {
+        "languagePair": {"type": "string"},
+        "domainExpertise": {"type": "string"},
+        "minLatency": {"type": "integer"}
+      },
+      "additionalProperties": true
+    }
+  },
+  "required": ["requestType", "requestingAgent"]
+}

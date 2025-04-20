@@ -1,0 +1,22 @@
+{
+  "$schema": "http://json-schema.org/draft-07/schema#",
+  "title": "AgentCapabilityResponse",
+  "description": "Schema for responding to an agent capability request.",
+  "type": "object",
+  "properties": {
+    "status": {
+      "type": "string",
+      "enum": ["success", "failure"],
+      "description": "Indicates if the request was successful."
+    },
+    "errorMessage": {
+      "type": ["string", "null"],
+      "description": "Error message if the request failed."
+    },
+    "respondingAgent": {
+      "type": ["object", "null"],
+      "description": "Profile of the responding agent, if any."
+    }
+  },
+  "required": ["status", "errorMessage", "respondingAgent"]
+}

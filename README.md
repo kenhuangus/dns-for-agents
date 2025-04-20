@@ -1,64 +1,125 @@
 # Agent DNS Discovery Tool
 
-## Overview
+## What is This?
 
-The **Agent DNS Discovery Tool** (`discovery_tool.py`) acts as a decentralized "DNS" for agentic AI systems, enabling agents to discover and advertise capabilities in a secure, standards-compliant manner. It is designed for multi-agent environments using the A2A and MCP protocols, supporting robust schema validation and extensibility.
+The **Agent DNS Discovery Tool** is a secure, standards-compliant registry and lookup service for multi-agent AI systems. It acts as a decentralized "DNS for Agents," enabling agents to:
+- **Advertise** their capabilities, endpoints, and credentials
+- **Discover** other agents matching specific needs (e.g., translation, domain expertise, performance)
 
-- **Discovery**: Agents can query for other agents with specific capabilities, domain expertise, or performance characteristics.
-- **Advertisement**: Agents can register their capabilities, endpoints, and metadata so they can be discovered by others.
-- **Compliance**: All requests and responses are validated against strict JSON Schemas, ensuring interoperability and security.
+This tool is built for environments using the A2A (Agent-to-Agent) and MCP (Multi-Agent Collaboration Protocol) standards, with robust JSON Schema and cryptographic certificate validation.
 
-## How It Works
+---
 
-- Agents send a **discovery request** (e.g., "find me a DocumentTranslation agent for en-fr legal documents") using a JSON payload.
-- The tool matches the request against registered agents and returns a schema-compliant response describing the best match.
-- Agents can also **advertise** their own capabilities and endpoints, registering themselves for future discovery.
-- The tool enforces all required fields (including certificates, A2A AgentCard, and MCP metadata) for both flows.
+## Architecture
 
-## Example Usage
+```mermaid
+graph TD
+    subgraph Agent DNS Discovery Tool
+      DT[Discovery Tool]
+      REG[Agent Registry]
+      SCHEMA[JSON Schema Validator]
+      CERT[Certificate Validator]
+    end
 
-### 1. Set Up the Environment
+    AG1[Agent A (Advertiser)] -- Advertise Capabilities --> DT
+    AG2[Agent B (Discoverer)] -- Discovery Request --> DT
+    DT -- Schema Validation --> SCHEMA
+    DT -- Cert Validation --> CERT
+    DT -- Register/Lookup --> REG
+    DT -- Discovery Response --> AG2
+    DT -- Advertisement Response --> AG1
+```
+
+- Agents interact with the tool via JSON payloads (discovery/advertisement)
+- All requests and responses are validated for structure and trust
+- The registry is extensible for new agent types and metadata
+
+---
+
+## Main Usage Example
+
+### 1. Environment Setup
 
 ```sh
 python -m venv venv
 venv\Scripts\activate
-pip install jsonschema
+pip install jsonschema cryptography
 ```
 
-### 2. Run the Tool
+### 2. Generate Certificates (for Secure Trust)
+
+```sh
+# Root CA
+openssl genrsa -out ca.key 2048
+openssl req -x509 -new -nodes -key ca.key -sha256 -days 3650 -out ca.pem -subj "/CN=Test Root CA/OU=TestCA/O=TestOrg/L=TestCity/C=US"
+# Agent
+openssl genrsa -out agent.key 2048
+openssl req -new -key agent.key -out agent.csr -subj "/CN=TranslatorB/OU=Agents/O=MyOrg/L=City/C=US"
+openssl x509 -req -in agent.csr -CA ca.pem -CAkey ca.key -CAcreateserial -out agent.pem -days 365 -sha256
+```
+
+### 3. Run the Main Tool
 
 ```sh
 python discovery_tool.py
 ```
 
-### 3. Example Output
+### 4. Example: Programmatic Usage
 
-You should see output like:
+```python
+from discovery_tool import AgentDiscoveryTool, AGENT_CAPABILITY_REQUEST_SCHEMA, AGENT_CAPABILITY_RESPONSE_SCHEMA
 
-```
-Advertisement Response:
-{
-  "status": "success",
-  ...
+# Load CA
+tool = AgentDiscoveryTool(AGENT_CAPABILITY_REQUEST_SCHEMA, AGENT_CAPABILITY_RESPONSE_SCHEMA, ca_cert_path="ca.pem")
+
+# Load agent cert
+with open("agent.pem") as f:
+    agent_cert_pem = f.read()
+
+# Advertisement payload
+adv_payload = {
+    "requestType": "advertisement",
+    "requestingAgent": {
+        "agentName": "TranslatorB",
+        ...
+        "certificate": {
+            ...
+            "certificatePEM": agent_cert_pem,
+        },
+        ...
+    }
 }
+resp = tool.handle_advertisement(adv_payload, {})
+print(resp)
 
-Discovery Response:
-{
-  "status": "success",
-  ...
-}
+# Discovery payload (see test_discovery_tool.py for details)
 ```
 
-- The **Advertisement Response** confirms that an agent has registered successfully.
-- The **Discovery Response** returns a matching agent profile, including its endpoint, capabilities, and cryptographic metadata.
+---
 
-## How to Test
+## Automated Testing
 
-1. **Advertisement**: The tool first registers a sample agent (`TranslatorB`) with full metadata (capabilities, endpoint, certificate, etc.).
-2. **Discovery**: The tool then queries for an agent with `DocumentTranslation` capability, matching the registered agent.
-3. **Validation**: All requests and responses are validated against the provided schemas. Any missing or invalid fields will result in a detailed error message.
+A full test script is included:
 
-You can modify the payloads in `discovery_tool.py` to test with your own agent profiles and queries.
+```sh
+python test_discovery_tool.py
+```
+
+This script exercises both advertisement and discovery flows with real certificate validation. If you tamper with certificates or CA, the tool will reject the agent.
+
+---
+
+## How to Contribute
+
+Contributions are welcome! Please see the [Contributing Guidelines](CONTRIBUTING.md) and open issues or pull requests for improvements.
+
+## License
+
+This project is licensed under the [MIT License](LICENSE).
+
+## Disclaimer & No Liability
+
+This software is provided "as is", without warranty of any kind, express or implied. The authors and contributors shall not be held liable for any damages or losses arising from the use of this software. Use at your own risk.
 
 ---
 
