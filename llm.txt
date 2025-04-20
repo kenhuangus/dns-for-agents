@@ -1,0 +1,37 @@
+Agent DNS Discovery Tool
+========================
+
+Overview:
+---------
+The Agent DNS Discovery Tool is an open-source solution for secure, standards-compliant agent discovery and capability advertisement in multi-agent AI systems. Inspired by the DNS model, this tool enables agents to advertise their capabilities, endpoints, and credentials, and allows other agents to discover them based on standardized queries and robust validation.
+
+Key Features:
+-------------
+- **Discovery:** Agents can search for other agents with specific capabilities, domain expertise, or performance characteristics.
+- **Advertisement:** Agents can register their capabilities, endpoints, and cryptographic credentials for discovery by others.
+- **Schema Validation:** All requests and responses are validated against external JSON Schema files for interoperability and extensibility.
+- **Certificate Validation:** Supports secure, certificate-based trust using a local Certificate Authority (CA).
+- **Extensible:** JSON schemas and agent profiles can be easily extended for new use cases or agent types.
+
+Why Use This Tool?
+------------------
+- Prevents agent silos by providing a standardized discovery protocol.
+- Ensures secure, authenticated agent interactions with certificate and schema validation.
+- Promotes interoperability for federated AI, agentic workflows, and collaborative automation.
+
+How to Use:
+-----------
+1. Clone the repo and set up your Python environment.
+2. Generate demo certificates (instructions in README).
+3. Run `discovery_tool.py` for agent registration and discovery.
+4. Run `test_discovery_tool.py` to validate flows and schema compliance.
+5. Edit the JSON schema files to add new agent types, metadata, or validation rules.
+
+Get Started:
+------------
+GitHub: https://github.com/kenhuangus/dns-for-agents
+
+For more details, see the README.md in the repository.
+
+---
+Contact: Ken Huang | Open to contributions and feedback!
