@@ -36,6 +36,26 @@ graph TD
 
 ---
 
+## JSON Schema Files
+
+This tool validates all agent requests and responses using two external JSON Schema files:
+
+- `agent_capability_request.schema.json`: Defines the required structure for agent discovery and advertisement requests.
+- `agent_capability_response.schema.json`: Defines the required structure for responses to those requests.
+
+**Location:** Both files are in the project root directory. You can open and edit them with any text editor or JSON tool.
+
+**Purpose:**
+- Ensure all agent messages are well-formed and standards-compliant.
+- Make it easy to extend the protocol for new agent types, capabilities, or metadata fields. Just update the schema files as needed.
+
+**How to Update:**
+- To add new required agent metadata, add properties to the appropriate schema file.
+- To relax or tighten validation, edit types, required fields, or allowed values in the schema.
+- After editing, re-run the tool and tests to confirm everything works as expected.
+
+---
+
 ## Main Usage Example
 
 ### 1. Environment Setup
