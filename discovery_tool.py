@@ -26,6 +26,9 @@ def load_schema(path):
     with open(path) as f:
         return json.load(f)
 
+# Updated: The agent identifier for requestingAgent must now use the following fields in this order:
+# protocol, agentName, agentCategory, providerName, version, [extension (optional)]
+# The schema enforces this structure for all validations below.
 AGENT_CAPABILITY_REQUEST_SCHEMA = load_schema("agent_capability_request.schema.json")
 AGENT_CAPABILITY_RESPONSE_SCHEMA = load_schema("agent_capability_response.schema.json")
 

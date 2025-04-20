@@ -10,8 +10,12 @@ def init_db():
     c.execute('''
         CREATE TABLE IF NOT EXISTS agent_registrations (
             id INTEGER PRIMARY KEY AUTOINCREMENT,
+            protocol TEXT,
             agentName TEXT,
-            agentPolicyId TEXT,
+            agentCategory TEXT,
+            providerName TEXT,
+            version TEXT,
+            extension TEXT,
             agentUseJustification TEXT,
             agentCapability TEXT,
             agentEndpoint TEXT,

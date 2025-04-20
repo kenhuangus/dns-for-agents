@@ -1,0 +1,261 @@
+{
+  "$schema": "http://json-schema.org/draft-07/schema#",
+  "title": "AgentRegistrationResponse",
+  "description": "Schema for responding to an agent registration request.",
+  "type": "object",
+  "properties": {
+    "status": {
+      "type": "string",
+      "enum": ["success", "failure"],
+      "description": "Status of the request."
+    },
+    "errorMessage": {
+      "type": "string",
+      "description": "Error message if the request failed."
+    },
+    "respondingAgent": {
+      "type": "object",
+      "description": "Information about the registered agent.",
+      "properties": {
+        "protocol": {
+          "type": "string",
+          "description": "Protocol used by the agent."
+        },
+        "agentName": {
+          "type": "string",
+          "description": "Name of the responding agent."
+        },
+        "agentCategory": {
+          "type": "string",
+          "description": "Category of the agent."
+        },
+        "providerName": {
+          "type": "string",
+          "description": "Name of the agent provider."
+        },
+        "version": {
+          "type": "string",
+          "description": "Version of the agent."
+        },
+        "extension": {
+          "type": "string",
+          "description": "Optional extension field for agent-specific data."
+        },
+        "agentUseJustification": {
+          "type": "string",
+          "description": "Justification for the agent's use in this context."
+        },
+        "agentCapability": {
+          "type": "string",
+          "description": "The primary capability offered by the agent (e.g., 'DocumentTranslation')."
+        },
+        "agentEndpoint": {
+          "type": "string",
+          "format": "uri",
+          "description": "The network endpoint of the responding agent."
+        },
+        "agentDID": {
+          "type": "string",
+          "description": "The Decentralized Identifier (DID) of the agent."
+        },
+        "certificate": {
+          "type": "object",
+          "description": "The certificate of the agent",
+          "properties": {
+            "certificateSubject": {
+              "type": "string"
+            },
+            "certificateIssuer": {
+              "type": "string"
+            },
+            "certificateSerialNumber": {
+              "type": "string"
+            },
+            "certificateValidFrom": {
+              "type": "string",
+              "format": "date-time"
+            },
+            "certificateValidTo": {
+              "type": "string",
+              "format": "date-time"
+            },
+            "certificatePEM": {
+              "type": "string",
+              "description": "Base64 encoded PEM certificate (consider a reference to a secure vault instead)."
+            },
+            "certificatePublicKeyAlgorithm": {
+              "type": "string"
+            },
+            "certificateSignatureAlgorithm": {
+              "type": "string"
+            }
+          },
+          "required": [
+            "certificateSubject",
+            "certificateIssuer",
+            "certificateSerialNumber",
+            "certificateValidFrom",
+            "certificateValidTo",
+            "certificatePEM",
+            "certificatePublicKeyAlgorithm",
+            "certificateSignatureAlgorithm"
+          ]
+        },
+        "a2aAgentCard": {
+          "type": "object",
+          "description": "A2A Agent Card describing agent capabilities and endpoints.",
+          "properties": {
+            "agentName": { "type": "string" },
+            "description": { "type": "string" },
+            "capabilities": {
+              "type": "array",
+              "items": { "type": "string" }
+            },
+            "endpoints": {
+              "type": "array",
+              "items": {
+                "type": "object",
+                "properties": {
+                  "protocol": { "type": "string" },
+                  "url": { "type": "string", "format": "uri" }
+                },
+                "required": ["protocol", "url"]
+              }
+            }
+          },
+          "required": ["agentName", "description", "capabilities", "endpoints"]
+        },
+         "mcpServerInformation": {
+          "type": "object",
+          "description": "Information about the MCP server",
+          "properties":{
+            "tools":{
+                "type":"array",
+                "items": {
+                    "type": "object",
+                    "description": "Description of MCP tool",
+                    "properties": {
+                        "name": {
+                            "type": "string",
+                            "description": "Name of the tool.  Example: send_email"
+                        },
+                        "description": {
+                            "type": "string",
+                            "description": "Description of what the tool does"
+                        },
+                        "parameters": {
+                            "type": "object",
+                            "description": "JSON schema for the parameters that the tool takes"
+                        },
+                        "results": {
+                            "type": "object",
+                            "description": "JSON schema for the results that the tool returns"
+                        }
+                    },
+                    "required": [
+                        "name",
+                        "description",
+                        "parameters",
+                        "results"
+                    ]
+                  }
+            },
+              "resources":{
+                 "type":"array",
+                 "items": {
+                    "type": "object",
+                    "description": "Description of MCP resource",
+                    "properties": {
+                        "name": {
+                            "type": "string",
+                            "description": "Name of the resource. Example: user_profile"
+                        },
+                        "description": {
+                            "type": "string",
+                            "description": "Description of what the resource provides"
+                        },
+                        "returns": {
+                            "type": "object",
+                            "description": "JSON schema for what the resource returns"
+                        }
+                    },
+                    "required": [
+                        "name",
+                        "description",
+                        "returns"
+                    ]
+                  }
+            }
+
+          },
+           "required": ["tools", "resources"]
+        },
+        "agentDNSName": {
+          "type": "string",
+          "description": "The DNS-like name of the agent (e.g., translator.legal.agentic.ai)."
+        },
+        "registrationTimestamp": {
+          "type": "string",
+          "format": "date-time",
+          "description": "Timestamp of agent's registration."
+        },
+        "renewalTimestamp": {
+          "type": "string",
+          "format": "date-time",
+          "description": "Timestamp of agent's last renewal (same as registration initially)."
+        },
+        "agentStatus": {
+          "type": "string",
+          "enum": ["active", "inactive"],
+          "description": "Status of the agent."
+        },
+        "additionalCapabilities": {
+          "type": "object",
+          "description": "Additional capabilities and metadata about the agent.",
+          "properties": {
+            "languagePair": {
+              "type": "string",
+              "description": "Supported language pair for translation (e.g., 'en-fr')."
+            },
+            "domainExpertise": {
+              "type": "string",
+              "description": "Domain expertise (e.g., 'Legal')."
+            },
+            "latency": {
+              "type": "integer",
+              "description": "Average latency in milliseconds."
+            },
+            "bleuScore": {
+              "type": "number",
+              "description": "BLEU score for translation quality."
+            }
+          },
+          "additionalProperties": true
+        }
+      },
+      "required": [
+        "protocol",
+        "agentName",
+        "agentCategory",
+        "providerName",
+        "version",
+        "extension",
+        "agentUseJustification",
+        "agentCapability",
+        "agentEndpoint",
+        "agentDID",
+        "certificate",
+        "a2aAgentCard",
+        "mcpServerInformation",
+          "agentDNSName",
+        "registrationTimestamp",
+        "renewalTimestamp",
+        "agentStatus"
+      ]
+    }
+  },
+  "required": [
+    "status",
+    "respondingAgent"
+  ]
+}

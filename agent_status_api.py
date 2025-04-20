@@ -13,7 +13,13 @@ class StatusHandler(BaseHTTPRequestHandler):
             self.wfile.write(b'Not Found')
             return
         params = parse_qs(parsed.query)
+        # Updated: Extract agent identifier fields according to the new schema structure
         agent_name = params.get('agentName', [None])[0]
+        protocol = params.get('protocol', [None])[0]
+        agent_category = params.get('agentCategory', [None])[0]
+        provider_name = params.get('providerName', [None])[0]
+        version = params.get('version', [None])[0]
+        extension = params.get('extension', [None])[0]
         if not agent_name:
             self.send_response(400)
             self.end_headers()

@@ -26,8 +26,12 @@ def test_advertisement_and_discovery():
     adv_payload = {
         "requestType": "advertisement",
         "requestingAgent": {
+            "protocol": "a2a",
             "agentName": "TranslatorB",
-            "agentPolicyId": "policy456",
+            "agentCategory": "translator",
+            "providerName": "openai",
+            "version": "1.0",
+            # "extension": "agent",  # Optional
             "agentUseJustification": "Provides Legal Translation",
             "agentCapability": "DocumentTranslation",
             "agentEndpoint": "https://translatorb.example.com",
@@ -66,8 +70,12 @@ def test_advertisement_and_discovery():
     request_payload = {
         "requestType": "discovery",
         "requestingAgent": {
+            "protocol": "a2a",
             "agentName": "DocProcA",
-            "agentPolicyId": "policy123",
+            "agentCategory": "document_processor",
+            "providerName": "openai",
+            "version": "1.0",
+            # "extension": "agent",  # Optional
             "agentUseJustification": "Needs translation",
             "agentCapability": "DocumentTranslation",
             "agentEndpoint": "https://docproca.example.com",

@@ -13,11 +13,15 @@
       "type": "object",
       "description": "Information about the agent making the request.",
       "properties": {
+        "protocol": {"type": "string", "enum": ["a2a", "mcp", "acp"], "description": "The protocol used by the agent (e.g., a2a, mcp, acp)."},
         "agentName": {"type": "string"},
-        "agentPolicyId": {"type": "string"},
+        "agentCategory": {"type": "string"},
+        "providerName": {"type": "string"},
+        "version": {"type": "string"},
+        "extension": {"type": "string"},
         "agentUseJustification": {"type": "string"},
         "agentCapability": {"type": "string"},
-        "agentEndpoint": {"type": "string", "format": "uri"},
+        "agentEndpoint": {"type": "string", "description": "The network endpoint of the agent."},
         "agentDID": {"type": "string"},
         "certificate": {
           "type": "object",
@@ -56,14 +60,10 @@
           "required": ["agentName", "description", "capabilities", "endpoints"]
         },
         "mcpClientInformation": {
-          "type": "object",
-          "properties":{
-            "supportedTools": {"type": "array"},
-            "supportedResources": {"type": "array"}
-          }
+          "type": "object"
         }
       },
-      "required": ["agentName","agentPolicyId","agentUseJustification","agentCapability","agentEndpoint","agentDID","certificate","a2aAgentCard"]
+      "required": ["protocol", "agentName", "agentCategory", "providerName", "version", "agentUseJustification", "agentCapability", "agentEndpoint", "agentDID", "certificate"]
     },
     "queryParameters": {
       "type": "object",

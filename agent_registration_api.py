@@ -31,8 +31,14 @@ def make_registration_response(request_data, success=True, error_message=None):
             "respondingAgent": request_data["requestingAgent"]
         }
         # Add required fields for response schema compliance
+        # Updated: Populate new agent identifier fields according to the new schema structure
         response["respondingAgent"].update({
-            "agentPolicyId": request_data["requestingAgent"].get("agentPolicyId", ""),
+            "protocol": request_data["requestingAgent"].get("protocol", "a2a"),
+            "agentName": request_data["requestingAgent"].get("agentName", ""),
+            "agentCategory": request_data["requestingAgent"].get("agentCategory", ""),
+            "providerName": request_data["requestingAgent"].get("providerName", ""),
+            "version": request_data["requestingAgent"].get("version", "1.0"),
+            "extension": request_data["requestingAgent"].get("extension", ""),
             "certificate": {},
             "registrationTimestamp": "2025-04-20T11:03:00Z",
             "renewalTimestamp": "2025-04-20T11:03:00Z",

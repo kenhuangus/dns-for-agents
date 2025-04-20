@@ -1,7 +1,7 @@
 {
   "$schema": "http://json-schema.org/draft-07/schema#",
-  "title": "AgentDeactivationResponse",
-  "description": "Schema for responding to an agent deactivation request.",
+  "title": "AgentRenewalResponse",
+  "description": "Schema for responding to an agent renewal request.",
   "type": "object",
   "properties": {
     "status": {
@@ -9,9 +9,9 @@
       "enum": ["success", "failure"],
       "description": "Status of the request."
     },
-    "deactivatedAgent": {
+    "respondingAgent": {
       "type": "object",
-      "description": "Identifier of the agent that was deactivated.",
+      "description": "Identifier of the agent that was renewed.",
       "properties": {
         "protocol": {"type": "string"},
         "agentName": {"type": "string"},
@@ -21,6 +21,10 @@
         "extension": {"type": "string"}
       },
       "required": ["protocol", "agentName", "agentCategory", "providerName", "version"]
+    },
+      "type": "string",
+      "enum": ["success", "failure"],
+      "description": "Status of the request."
     },
     "errorMessage": {
       "type": "string",

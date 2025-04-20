@@ -13,13 +13,30 @@
       "type": "object",
       "description": "Information about the agent making the request.",
       "properties": {
+        "protocol": {
+          "type": "string",
+          "enum": ["a2a", "mcp", "acp"],
+          "description": "The protocol used by the agent (e.g., a2a, mcp, acp)."
+        },
         "agentName": {
           "type": "string",
-          "description": "Name of the agent."
+          "description": "The agent's unique name (e.g., 'bob')."
         },
-        "agentPolicyId": {
+        "agentCategory": {
           "type": "string",
-          "description": "Identifier of the agent's security policy."
+          "description": "The agent's category (e.g., 'translator')."
+        },
+        "providerName": {
+          "type": "string",
+          "description": "The provider of the agent (e.g., 'openai')."
+        },
+        "version": {
+          "type": "string",
+          "description": "Version of the request or schema (e.g., '1.0')."
+        },
+        "extension": {
+          "type": "string",
+          "description": "The extension for the agent (e.g., 'agent')."
         },
         "agentUseJustification": {
           "type": "string",
@@ -31,8 +48,7 @@
         },
         "agentEndpoint": {
           "type": "string",
-          "format": "uri",
-          "description": "The network endpoint of the agent."
+          "description": "The network endpoint of the agent, constructed as <protocol>://<agent-name>.<agent-category>.<provider-name>.<extension>."
         },
         "agentDID": {
           "type": "string",
@@ -66,59 +82,22 @@
           "type": "string",
           "description": "Base64 encoded PEM certificate signing request."
         },
-        "a2aAgentCard": {
-          "type": "object",
-          "description": "A2A Agent Card describing agent capabilities and endpoints.",
-          "properties": {
-            "agentName": { "type": "string" },
-            "description": { "type": "string" },
-            "capabilities": {
-              "type": "array",
-              "items": { "type": "string" }
-            },
-            "endpoints": {
-              "type": "array",
-              "items": {
-                "type": "object",
-                "properties": {
-                  "protocol": { "type": "string" },
-                  "url": { "type": "string", "format": "uri" }
-                },
-                "required": ["protocol", "url"]
-              }
-            }
-          },
-          "required": ["agentName", "description", "capabilities", "endpoints"]
-        },
-         "mcpClientInformation": {
-          "type": "object",
-          "description": "Information about the MCP client if it is relevant",
-          "properties":{
-            "supportedTools":{
-                "type":"array",
-                "description": "List of names of the tools the agent supports."
-            },
-              "supportedResources":{
-                "type":"array",
-                "description": "List of names of the resources the agent supports."
-            }
-
-          }
-        },
-         "agentDNSName": {
+        "agentDNSName": {
           "type": "string",
           "description": "The DNS-like name of the agent (e.g., translator.legal.agentic.ai)."
         }
       },
       "required": [
+        "protocol",
         "agentName",
-        "agentPolicyId",
+        "agentCategory",
+        "providerName",
+        "version",
         "agentUseJustification",
         "agentCapability",
         "agentEndpoint",
         "agentDID",
         "certificate",
-        "a2aAgentCard",
         "csrPEM",
         "agentDNSName"
       ]

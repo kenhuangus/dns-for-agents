@@ -4,10 +4,30 @@
   "description": "Schema for deactivating an agent.",
   "type": "object",
   "properties": {
+    "protocol": {
+      "type": "string",
+      "description": "The protocol used by the agent (e.g., a2a, mcp, acp)."
+    },
     "agentName": {
       "type": "string",
-      "description": "Name of the agent to deactivate."
+      "description": "The agent's unique name (e.g., 'bob')."
+    },
+    "agentCategory": {
+      "type": "string",
+      "description": "The agent's category (e.g., 'translator')."
+    },
+    "providerName": {
+      "type": "string",
+      "description": "The provider of the agent (e.g., 'openai')."
+    },
+    "version": {
+      "type": "string",
+      "description": "Version of the request or schema (e.g., '1.0')."
+    },
+    "extension": {
+      "type": "string",
+      "description": "The extension for the agent (e.g., 'agent')."
     }
-  },
-  "required": ["agentName"]
+  }
+  "required": ["protocol", "agentName", "agentCategory", "providerName", "version"]
 }
