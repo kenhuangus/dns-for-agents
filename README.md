@@ -10,32 +10,6 @@ This tool is built for environments using the A2A (Agent-to-Agent) and MCP (Mult
 
 ---
 
-## Architecture
-
-```mermaid
-graph TD
-    subgraph Agent DNS Discovery Tool
-      DT[Discovery Tool]
-      REG[Agent Registry]
-      SCHEMA[JSON Schema Validator]
-      CERT[Certificate Validator]
-    end
-
-    AG1[Agent A (Advertiser)] -- Advertise Capabilities --> DT
-    AG2[Agent B (Discoverer)] -- Discovery Request --> DT
-    DT -- Schema Validation --> SCHEMA
-    DT -- Cert Validation --> CERT
-    DT -- Register/Lookup --> REG
-    DT -- Discovery Response --> AG2
-    DT -- Advertisement Response --> AG1
-```
-
-- Agents interact with the tool via JSON payloads (discovery/advertisement)
-- All requests and responses are validated for structure and trust
-- The registry is extensible for new agent types and metadata
-
----
-
 ## JSON Schema Files
 
 This tool validates all agent requests and responses using two external JSON Schema files:
