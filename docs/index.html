@@ -1,0 +1,67 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Agent DNS & Registration Tool</title>
+    <link rel="stylesheet" href="style.css">
+</head>
+<body>
+    <header>
+        <h1>Agent DNS & Registration Tool</h1>
+        <p class="subtitle">A secure registry and discovery system for multi-agent AI environments</p>
+    </header>
+    <main>
+        <section>
+            <h2>What is This?</h2>
+            <p>This tool provides a secure, standards-compliant registry and lookup service for multi-agent AI systems, supporting registration, renewal, deactivation, and status queries for agents. Built for A2A/MCP environments, it uses JSON Schema and certificate validation for robust security.</p>
+        </section>
+        <section>
+            <h2>Features</h2>
+            <ul>
+                <li><strong>Agent Registration</strong> – Register agents with certificate and metadata</li>
+                <li><strong>Renewal</strong> – Renew agent registration and update capabilities</li>
+                <li><strong>Deactivation</strong> – Deactivate an agent by name</li>
+                <li><strong>Status Query</strong> – Query current status (active/inactive) of any agent</li>
+                <li><strong>JSON Schema Validation</strong> – All requests validated for structure and content</li>
+            </ul>
+        </section>
+        <section>
+            <h2>How It Works</h2>
+            <ol>
+                <li>Agents send registration/renewal requests with signed certificates</li>
+                <li>Server validates requests against JSON Schemas and CA</li>
+                <li>Agents can be deactivated or queried for status at any time</li>
+            </ol>
+        </section>
+        <section>
+            <h2>Quick Start</h2>
+            <ol>
+                <li>Clone the repo: <code>git clone https://github.com/kenhuangus/dns-for-agents.git</code></li>
+                <li>Install dependencies: <code>pip install -r requirements.txt</code></li>
+                <li>Run the APIs: <code>python agent_registration_api.py</code> (see README for all endpoints)</li>
+                <li>Test with provided scripts or your own agent code</li>
+            </ol>
+            <p>See the <a href="README.md">README</a> for full documentation.</p>
+        </section>
+        <section>
+            <h2>GitHub Pages Deployment</h2>
+            <p>This site is published via <a href="https://pages.github.com/">GitHub Pages</a> as a static informational site. For API usage, clone and run locally.</p>
+        </section>
+        <section>
+            <h2>Resources</h2>
+            <ul>
+                <li><a href="https://github.com/kenhuangus/dns-for-agents">GitHub Repository</a></li>
+                <li><a href="README.md">Project Documentation (README)</a></li>
+                <li><a href="agent_registration_request_schema.json">Agent Registration Schema</a></li>
+                <li><a href="agent_renewal_request_schema.json">Agent Renewal Schema</a></li>
+                <li><a href="agent_deactivation_request_schema.json">Agent Deactivation Schema</a></li>
+                <li><a href="agent_status_api.py">Status Query API</a></li>
+            </ul>
+        </section>
+    </main>
+    <footer>
+        <p>&copy; 2025 Agent DNS Tool. Powered by GitHub Pages.</p>
+    </footer>
+</body>
+</html>
