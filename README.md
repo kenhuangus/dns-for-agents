@@ -1,14 +1,108 @@
-# Agent DNS Discovery Tool
+# Agent Registration & Discovery System
 
-## What is This?
-
-The **Agent DNS Discovery Tool** is a secure, standards-compliant registry and lookup service for multi-agent AI systems. It acts as a decentralized "DNS for Agents," enabling agents to:
-- **Advertise** their capabilities, endpoints, and credentials
-- **Discover** other agents matching specific needs (e.g., translation, domain expertise, performance)
-
-This tool is built for environments using the A2A (Agent-to-Agent) and MCP (Multi-Agent Collaboration Protocol) standards, with robust JSON Schema and cryptographic certificate validation.
+## Overview
+A secure registry and management API for multi-agent AI systems. Agents can register, renew, deactivate, and query their status, all with strong JSON Schema and certificate validation.
 
 ---
+
+## Features
+- **Agent Registration** (`/register`): Agents register with a valid certificate and metadata.
+- **Agent Renewal** (`/renew`): Agents renew their registration and update capabilities.
+- **Agent Deactivation** (`/deactivate`): Deactivate an agent by name (marks as inactive).
+- **Status Query** (`/status?agentName=...`): Query the current status (`active`/`inactive`) of any agent.
+- **Robust Validation**: All requests validated against JSON Schemas. Certificates must be signed by your local CA.
+
+---
+
+## Setup
+
+```sh
+python -m venv venv
+venv\Scripts\activate
+pip install jsonschema cryptography requests
+```
+
+### Generate Certificates (for Secure Trust)
+```sh
+# Root CA
+openssl genrsa -out ca.key 2048
+openssl req -x509 -new -nodes -key ca.key -sha256 -days 3650 -out ca.pem -subj "/CN=Test Root CA/OU=TestCA/O=TestOrg/L=TestCity/C=US"
+# Agent
+openssl genrsa -out agent.key 2048
+openssl req -new -key agent.key -out agent.csr -subj "/CN=TranslatorB/OU=Agents/O=MyOrg/L=City/C=US"
+openssl x509 -req -in agent.csr -CA ca.pem -CAkey ca.key -CAcreateserial -out agent.pem -days 365 -sha256
+```
+
+---
+
+## API Endpoints
+
+### 1. Registration
+- **Endpoint:** `POST /register`
+- **Schema:** `agent_registration_request_schema.json`
+- **Description:** Register a new agent with metadata and a valid certificate.
+
+### 2. Renewal
+- **Endpoint:** `POST /renew`
+- **Schema:** `agent_renewal_request_schema.json`
+- **Description:** Renew an agent's registration and update capabilities/certificate.
+
+### 3. Deactivation
+- **Endpoint:** `POST /deactivate`
+- **Schema:** `agent_deactivation_request_schema.json`
+- **Description:** Deactivate (set status to inactive) an agent by name.
+
+### 4. Status Query
+- **Endpoint:** `GET /status?agentName=...`
+- **Description:** Query current status (`active`/`inactive`) of any agent.
+
+---
+
+## JSON Schema Files
+- All schemas are in the project root and define request/response formats for each endpoint.
+- Update schemas to add/modify required agent metadata as needed.
+
+---
+
+## Running the APIs
+Each API runs on its own port. In separate terminals:
+```sh
+python agent_registration_api.py   # (default: 8080)
+python agent_renewal_api.py        # (default: 8081)
+python agent_deactivation_api.py   # (default: 8082)
+python agent_status_api.py         # (default: 8083)
+```
+
+---
+
+## Testing
+Test scripts are provided for each endpoint:
+```sh
+python test_registration_api.py
+python test_renewal_api.py
+python test_deactivation_api.py
+python test_status_api.py
+```
+Each script tests valid, invalid, and edge-case scenarios. Review output for status codes and messages.
+
+---
+
+## Security Considerations
+- **Certificate Validation:** All registration and renewal requests require a valid agent certificate signed by your local CA (`ca.pem`).
+- **Authentication:** (Optional, not yet implemented) You can add API Key, Bearer Token, or Mutual TLS authentication for additional security.
+- **Database:** All agent data is stored in `agent_registration.db` (SQLite, local).
+
+---
+
+## Extending & Customizing
+- To add new agent metadata or validation logic, update the corresponding JSON schema and handler.
+- To add authentication, see the README section on authentication options.
+
+---
+
+## License
+MIT
+
 
 ## JSON Schema Files
 
